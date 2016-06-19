@@ -18,7 +18,7 @@ func main() {
   }
 	// Instatiate server and register REST API controllers.
 	server := controller.NewServer(path.Dir(filename))
-	server.RegisterController("/coordinates", "api", controller.NewCoordinatesController(mongoDb))
+	server.RegisterController("/coordinates", controller.NewCoordinatesController(mongoDb))
 	// We're done setting up, fire it up!
 	fmt.Println("Fintag is ready to rumble!")
 	server.StartListen()

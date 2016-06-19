@@ -20,20 +20,30 @@ func NewServer(rootDirectory string) *Server {
 }
 
 func (server Server) StartListen() {
-    
+
     log.Fatal(http.ListenAndServe(":8080", server.router))
 }
+
+// /**
+// * Bind GET/POST/PUT/DELETE requests to the provided controller's methods.
+// */
+// func (server Server) RegisterController(route string, subdomain string, controller Controller) {
+//     // Restrict to subdomain.
+//     host := subdomain + ".{domain:[a-z0-9]+}"
+//     server.router.Host(host).Methods("GET").PathPrefix(route).HandlerFunc(controller.Get)
+//     server.router.Host(host).Methods("POST").Path(route).HandlerFunc(controller.Post)
+//     server.router.Host(host).Methods("PUT").Path(route).HandlerFunc(controller.Put)
+//     server.router.Host(host).Methods("DELETE").Path(route).HandlerFunc(controller.Delete)
+// }
 
 /**
 * Bind GET/POST/PUT/DELETE requests to the provided controller's methods.
 */
-func (server Server) RegisterController(route string, subdomain string, controller Controller) {
-    // Restrict to subdomain.
-    host := subdomain + ".{domain:[a-z0-9]+}"
-    server.router.Host(host).Methods("GET").PathPrefix(route).HandlerFunc(controller.Get)
-    server.router.Host(host).Methods("POST").Path(route).HandlerFunc(controller.Post)
-    server.router.Host(host).Methods("PUT").Path(route).HandlerFunc(controller.Put)
-    server.router.Host(host).Methods("DELETE").Path(route).HandlerFunc(controller.Delete)
+func (server Server) RegisterController(route string, controller Controller) {
+    server.router.Methods("GET").Path(route).HandlerFunc(controller.Get)
+    server.router.Methods("POST").Path(route).HandlerFunc(controller.Post)
+    server.router.Methods("PUT").Path(route).HandlerFunc(controller.Put)
+    server.router.Methods("DELETE").Path(route).HandlerFunc(controller.Delete)
 }
 
 /**
